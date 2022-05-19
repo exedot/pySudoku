@@ -24,7 +24,7 @@ def insert(win, position):
                     grid[i-1][j-1] = event.key - 48
                     pygame.draw.rect(win, background_colour, (position[0]*50 + buffer, position[1]*50 + buffer, 50 - 2*buffer, 50 - 2*buffer))
                     pygame.display.update()
-                if(1< event.key - 48 <10): #searching for valid input
+                if(0< event.key - 48 <10): #searching for valid input
                     pygame.draw.rect(win, background_colour, (position[0]*50 + buffer, position[1]*50 + buffer, 50 - 2*buffer, 50 - 2*buffer))
                     value = myfont.render(str(event.key-48), True, (0,0,0))
                     win.blit(value, (position[0]*50 + 15, position[1]*50))
