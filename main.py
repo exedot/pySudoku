@@ -15,7 +15,7 @@ original_grid_element_colour = (52, 31, 151)
 SCREEN = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Menu")
 
-BG = pygame.image.load("Menu/assets/Background.png")
+BG = pygame.image.load("sudoku_py/Menu/assets/Background.png")
 
 def get_font(size): return pygame.font.SysFont("Comic Sans Ms", size)
 
@@ -28,11 +28,11 @@ def main_menu():
         MENU_TEXT = get_font(100).render("MAIN MENU", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
-        PLAY_BUTTON = Button(image=pygame.image.load("Menu/assets/Play Rect.png"), pos=(640, 250), 
+        PLAY_BUTTON = Button(image=pygame.image.load("sudoku_py/Menu/assets/Play Rect.png"), pos=(640, 250), 
                             text_input="PLAY", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-        OPTIONS_BUTTON = Button(image=pygame.image.load("Menu/assets/Options Rect.png"), pos=(640, 400), 
+        OPTIONS_BUTTON = Button(image=pygame.image.load("sudoku_py/Menu/assets/Options Rect.png"), pos=(640, 400), 
                             text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-        QUIT_BUTTON = Button(image=pygame.image.load("Menu/assets/Quit Rect.png"), pos=(640, 550), 
+        QUIT_BUTTON = Button(image=pygame.image.load("sudoku_py/Menu/assets/Quit Rect.png"), pos=(640, 550), 
                             text_input="QUIT", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
 
         SCREEN.blit(MENU_TEXT, MENU_RECT)
@@ -90,17 +90,14 @@ def options(difficulty):
                 if OPTIONS_HARD.checkForInput(OPTIONS_MOUSE_POS):
                     difficulty = ("https://sugoku.herokuapp.com/board?difficulty=hard")
                     main()
-                    return difficulty
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if OPTIONS_MEDIUM.checkForInput(OPTIONS_MOUSE_POS):
                     difficulty = ("https://sugoku.herokuapp.com/board?difficulty=medium")
                     main()
-                    return difficulty
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if OPTIONS_EASY.checkForInput(OPTIONS_MOUSE_POS):
                     difficulty = ("https://sugoku.herokuapp.com/board?difficulty=easy")
                     main()
-                    return difficulty
         pygame.display.update()
 
 def insert(win, position):
