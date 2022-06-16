@@ -89,14 +89,17 @@ def options(difficulty):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if OPTIONS_HARD.checkForInput(OPTIONS_MOUSE_POS):
                     difficulty = ("https://sugoku.herokuapp.com/board?difficulty=hard")
+                    main()
                     return difficulty
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if OPTIONS_MEDIUM.checkForInput(OPTIONS_MOUSE_POS):
                     difficulty = ("https://sugoku.herokuapp.com/board?difficulty=medium")
+                    main()
                     return difficulty
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if OPTIONS_EASY.checkForInput(OPTIONS_MOUSE_POS):
                     difficulty = ("https://sugoku.herokuapp.com/board?difficulty=easy")
+                    main()
                     return difficulty
         pygame.display.update()
 
