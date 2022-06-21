@@ -125,22 +125,6 @@ def insert(SCREEN, position):
             return()
 
 def main(grid, response, difficulty):
-
-    MOUSE_POS = pygame.mouse.get_pos()
-    BACK = Button(image=None, pos=(320, 540), text_input="BACK", font=get_font(40), base_color="white", hovering_color="Green")
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if BACK.checkForInput(MOUSE_POS):
-                    main_menu()
-
-    for button in [BACK]:
-        button.changeColor(MOUSE_POS)
-        button.update(SCREEN)
-    SCREEN.blit(BG, BACK)
-                
     #Gives the program a recognisable title
     pygame.display.set_caption("Philip Norris")
     #Fills background with whatever colour you have chosen
