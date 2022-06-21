@@ -29,7 +29,7 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    main(grid, response, difficulty)
+                    main()
                 if DIFFICULTY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     difficultyselect(difficulty, response, grid)
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
@@ -61,43 +61,39 @@ def difficultyselect(difficulty, response, grid):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if BACK.checkForInput(difficultyselect_MOUSE_POS):
                     main_menu()
+                    # HARD
                 if difficulty_HARD.checkForInput(difficultyselect_MOUSE_POS):
                     difficulty = ("https://sugoku.herokuapp.com/grid?difficulty=hard")
                     response = requests.get(difficulty)
                     grid = response.json()['grid']
                     return grid, response, difficulty, main(grid, response, difficulty)
+                    # MEDIUM
                 if difficulty_MEDIUM.checkForInput(difficultyselect_MOUSE_POS):
                     difficulty = ("https://sugoku.herokuapp.com/grid?difficulty=medium")
                     response = requests.get(difficulty)
                     grid = response.json()['grid']
                     return grid, response, difficulty, main(grid, response, difficulty)
+                    # EASY
                 if difficulty_EASY.checkForInput(difficultyselect_MOUSE_POS):
                     difficulty = ("https://sugoku.herokuapp.com/grid?difficulty=easy")
                     response = requests.get(difficulty)
                     grid = response.json()['grid']
                     return grid, response, difficulty, main(grid, response, difficulty)              
         pygame.display.update()  
-
+# BOARD VARIABLES
 background_colour = (251,247,245)
 buffer = 5
 difficulty = "https://sugoku.herokuapp.com/grid?difficulty=easy"
 response = requests.get(difficulty)
-grid = [[1, 4, 7, 0, 0, 0, 0, 0, 3],
-        [2, 5, 0, 0, 0, 1, 0, 0, 0],
-        [3, 0, 9, 0, 0, 0, 0, 0, 0],
-        [0, 8, 0, 0, 2, 0, 0, 0, 4],
-        [0, 0, 0, 4, 1, 0, 0, 2, 0],
-        [9, 0, 0, 0, 0, 0, 6, 0, 0],
-        [0, 0, 3, 0, 0, 0, 0, 0, 9],
-        [4, 0, 0, 0, 0, 2, 0, 0, 0],
-        [0, 0, 1, 0, 0, 8, 0, 0, 7]]
+grid = response.json()['board']
 grid_original = [[grid[x][y]for y in range(len(grid[0]))] for x in range(len(grid))]
 original_grid_element_colour = (52, 31, 151)
-
-def insert(SCREEN, position):
+# INSERTION FUNCTION
+def insert(position):
     i, j = position[1], position[0]
     myfont = pygame.font.SysFont('Comic Sans MS', 35)
     while True:
@@ -123,8 +119,8 @@ def insert(SCREEN, position):
                     pygame.display.update()
                 return()
             return()
-
-def main(grid, response, difficulty):
+# MAIN FUNCTION
+def main():
     #Gives the program a recognisable title
     pygame.display.set_caption("Philip Norris")
     #Fills background with whatever colour you have chosen
@@ -159,7 +155,6 @@ def main(grid, response, difficulty):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-
         pygame.display.update()
 
 main_menu()
