@@ -11,16 +11,12 @@ def get_font(size): return pygame.font.SysFont("TIMES NEW ROMAN", size)
 def main_menu():
     while True:
         SCREEN.blit(BG, (0, 0))
-
         MENU_MOUSE_POS = pygame.mouse.get_pos()
-
         MENU_TEXT = get_font(100).render("MAIN MENU", True, "white")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
-
         PLAY_BUTTON = Button(image=pygame.image.load("sudoku_py/assets/Play Rect.png"), pos=(640, 250), text_input="PLAY", font=get_font(75), base_color="white", hovering_color="red")
         DIFFICULTY_BUTTON = Button(image=pygame.image.load("sudoku_py/assets/Options Rect.png"), pos=(640, 400), text_input="DIFFICULTY", font=get_font(75), base_color="white", hovering_color="red")
         QUIT_BUTTON = Button(image=pygame.image.load("sudoku_py/assets/Quit Rect.png"), pos=(640, 550), text_input="QUIT", font=get_font(75), base_color="white", hovering_color="red")
-
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
         for button in [PLAY_BUTTON, DIFFICULTY_BUTTON, QUIT_BUTTON]:
@@ -89,11 +85,17 @@ background_colour = (251,247,245)
 buffer = 5
 difficulty = "https://sugoku.herokuapp.com/grid?difficulty=easy"
 response = requests.get(difficulty)
-grid = response.json()['board']
+grid = [[1, 4, 7, 0, 0, 0, 0, 0, 3],
+        [2, 5, 0, 0, 0, 1, 0, 0, 0],
+        [3, 0, 9, 0, 0, 0, 0, 0, 0],
+        [0, 8, 0, 0, 2, 0, 0, 0, 4],
+        [0, 0, 0, 4, 1, 0, 0, 2, 0],
+        [9, 0, 0, 0, 0, 0, 6, 0, 0],
+        [0, 0, 3, 0, 0, 0, 0, 0, 9],
+        [4, 0, 0, 0, 0, 2, 0, 0, 0],
+        [0, 0, 1, 0, 0, 8, 0, 0, 7]]
 grid_original = [[grid[x][y]for y in range(len(grid[0]))] for x in range(len(grid))]
 original_grid_element_colour = (52, 31, 151)
-
-
 
 def insert(SCREEN, position):
     i, j = position[1], position[0]
@@ -124,26 +126,27 @@ def insert(SCREEN, position):
 
 def main(grid, response, difficulty):
 
-    SOLVE = Button(image='assets/play rect', pos=(640, 460), text_input="BACK", font=get_font(40), base_color="white", hovering_color="Green")
-
-    TEXT = get_font(100).render("NOW PLAYING", True, "black")
-    RECT = TEXT.get_rect(center=(640, 180))
     MOUSE_POS = pygame.mouse.get_pos()
-    SCREEN.blit(TEXT, RECT)
+    BACK = Button(image=None, pos=(320, 540), text_input="BACK", font=get_font(40), base_color="white", hovering_color="Green")
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if SOLVE.checkForInput(MOUSE_POS):
-                isValidSudoku()
+            if BACK.checkForInput(MOUSE_POS):
+                    main_menu()
+
+    for button in [BACK]:
+        button.changeColor(MOUSE_POS)
+        button.update(SCREEN)
+    SCREEN.blit(BG, BACK)
                 
     #Gives the program a recognisable title
     pygame.display.set_caption("Philip Norris")
     #Fills background with whatever colour you have chosen
     SCREEN.fill(background_colour)
     #Instructs pygame to use Comic Sans MS as it's font for the grid
-    myfont = get_font(35)
+    myfont = pygame.font.SysFont('Comic Sans MS', 35)
     # draws the grid the game is played on
     for i in range(0, 10):
         #checks the divisibilty of the number to combine the hard lines with the thinner ones.
@@ -175,148 +178,4 @@ def main(grid, response, difficulty):
 
         pygame.display.update()
 
-def winner():
-    SCREEN.fill("white")
-    WINTEXT = get_font(45).render("You are winner!", True, "white")
-    RECT = WINTEXT.get_rect(center=(640, 180))
-    SCREEN.blit(WINTEXT, RECT)
-    MOUSE_POS = pygame.mouse.get_pos()
-
-    BACK = Button(image=None, pos=(640, 460), text_input="BACK TO MAIN MENU", font=get_font(40), base_color="black", hovering_color="Green")
-    for button in [BACK]:
-        button.changeColor(MOUSE_POS)
-        button.update(SCREEN)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if BACK.checkForInput(MOUSE_POS):
-                    main_menu()
-
-def isinRange(grid):
-
-    N = 9
-
-    # Traverse grid[][] array
-    for i in range(0, N):
-        for j in range(0, N):
-        
-            # Check if grid[i][j]
-            # lies in the range
-            if ((grid[i][j] <= 0) or
-                (grid[i][j] > 9)):
-                return False
-    return True
-
-def isValidSudoku(grid):
-
-    N = 9
-
-    # Check if all elements of grid[][]
-    # stores value in the range[1, 9]
-    if (isinRange(grid) == False):
-        return False
-
-    # Stores unique value
-    # from 1 to N
-    unique = [False] * (N + 1)
-
-    # Traverse each row of
-    # the given array
-    for i in range(0, N):
-        
-        # Initialize unique[]
-        # array to false
-        for m in range(0, N + 1):
-            unique[m] = False
-
-        # Traverse each column
-        # of current row
-        for j in range(0, N):
-        
-        # Stores the value
-        # of grid[i][j]
-            Z = grid[i][j]
-
-        # Check if current row
-        # stores duplicate value
-        if (unique[Z] == True):
-            return False
-        
-        unique[Z] = True
-
-    # Traverse each column of
-    # the given array
-    for i in range(0, N):
-        
-        # Initialize unique[]
-        # array to false
-        for m in range(0, N + 1):
-            unique[m] = False
-
-        # Traverse each row
-        # of current column
-        for j in range(0, N):
-        
-        # Stores the value
-        # of grid[j][i]
-            Z = grid[j][i]
-
-        # Check if current column
-        # stores duplicate value
-        if (unique[Z] == True):
-            return False
-        
-        unique[Z] = True
-
-    # Traverse each block of
-    # size 3 * 3 in grid[][] array
-    for i in range(0, N - 2, 3):
-        
-        # j stores first column of
-        # each 3 * 3 block
-        for j in range(0, N - 2, 3):
-        
-        # Initialize unique[]
-        # array to false
-            for m in range(0, N + 1):
-                unique[m] = False
-
-        # Traverse current block
-        for k in range(0, 3):
-            for l in range(0, 3):
-            
-            # Stores row number
-            # of current block
-                X = i + k
-
-            # Stores column number
-            # of current block
-                Y = j + l
-
-            # Stores the value
-            # of grid[X][Y]
-                Z = grid[X][Y]
-
-            # Check if current block
-            # stores duplicate value
-            if (unique[Z] == True):
-                return False
-            
-            unique[Z] = True
-            
-    # If all conditions satisfied
-    return True
-
-
-if (isValidSudoku(grid)):
-	print("Valid")
-else:
-	print("Not Valid")
-	
-# This code is contributed by akhilsaini
-
-        
 main_menu()

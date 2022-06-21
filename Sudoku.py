@@ -13,39 +13,11 @@ buffer = 5
 response = requests.get("https://sugoku.herokuapp.com/board?difficulty=easy")
 #Assigns the variables extracted above and applies them to our generated grid
 grid = response.json()['board']
-#sets grid's original parameters
+#sets grid parameters
 grid_original = [[grid[x][y]for y in range(len(grid[0]))] for x in range(len(grid))]
 original_grid_element_colour = (52, 31, 151)
 
-def insert(win, position):
-    #assigns position
-    i, j = position[1], position[0]
-    myfont = pygame.font.SysFont('Comic Sans MS', 35)
-    while True:
-        #Checking which event has taken place
-        for event in pygame.event.get():
-            #If the player has quit, the program returns that outcome and is terminated
-            if event.type == pygame.QUIT:
-                return
-            #If key is pressed then:
-            if event.type == pygame.KEYDOWN:
-                #Determines whether input is not equal to zero
-                if(grid_original[i-1][j-1] !=0):
-                    return
-                if(event.key == 48):
-                    grid[i-1][j-1] = event.key - 48
-                    pygame.draw.rect(win, background_colour, (position[0]*50 + buffer, position[1]*50 + buffer, 50 - 2*buffer, 50 - 2*buffer))
-                    pygame.display.update()
-                if(0< event.key - 48 <10): #searching for valid input
-                    pygame.draw.rect(win, background_colour, (position[0]*50 + buffer, position[1]*50 + buffer, 50 - 2*buffer, 50 - 2*buffer))
-                    value = myfont.render(str(event.key-48), True, (0,0,0))
-                    win.blit(value, (position[0]*50 + 15, position[1]*50))
-                    grid[i-1][j-1] = event.key - 48
-                    pygame.display.update()
-                return()
-            return()
-
-
+# Playable function
 def main():
     #Initiate pygame plugin
     pygame.init()
@@ -88,4 +60,32 @@ def main():
                 pygame.quit()
                 return
 
+# Insertion function
+def insert(win, position):
+    #assigns position
+    i, j = position[1], position[0]
+    myfont = pygame.font.SysFont('Comic Sans MS', 35)
+    while True:
+        #Checking which event has taken place
+        for event in pygame.event.get():
+            #If the player has quit, the program returns that outcome and is terminated
+            if event.type == pygame.QUIT:
+                return
+            #If key is pressed then:
+            if event.type == pygame.KEYDOWN:
+                #Determines whether input is not equal to zero
+                if(grid_original[i-1][j-1] !=0):
+                    return
+                if(event.key == 48):
+                    grid[i-1][j-1] = event.key - 48
+                    pygame.draw.rect(win, background_colour, (position[0]*50 + buffer, position[1]*50 + buffer, 50 - 2*buffer, 50 - 2*buffer))
+                    pygame.display.update()
+                if(0< event.key - 48 <10): #searching for valid input
+                    pygame.draw.rect(win, background_colour, (position[0]*50 + buffer, position[1]*50 + buffer, 50 - 2*buffer, 50 - 2*buffer))
+                    value = myfont.render(str(event.key-48), True, (0,0,0))
+                    win.blit(value, (position[0]*50 + 15, position[1]*50))
+                    grid[i-1][j-1] = event.key - 48
+                    pygame.display.update()
+                return()
+            return()
 main()
