@@ -7,7 +7,7 @@ pygame.display.set_caption("Menu")
 BG = pygame.image.load("assets/Background.png")
 
 def get_font(size):
-    return pygame.font.Font("assets/font.ttf", size)
+    return pygame.font.Font("TIMES NEW ROMAN", size)
 
 def play():
     while True:

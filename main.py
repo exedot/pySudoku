@@ -3,8 +3,6 @@ from button import Button
 import requests
 pygame.init()
 
-
-
 SCREEN = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Menu")
 BG = pygame.image.load("sudoku_py/assets/Background.png")
@@ -91,7 +89,7 @@ background_colour = (251,247,245)
 buffer = 5
 difficulty = "https://sugoku.herokuapp.com/grid?difficulty=easy"
 response = requests.get(difficulty)
-grid = response.json()['grid']
+grid = response.json()['board']
 grid_original = [[grid[x][y]for y in range(len(grid[0]))] for x in range(len(grid))]
 original_grid_element_colour = (52, 31, 151)
 
@@ -126,7 +124,7 @@ def insert(SCREEN, position):
 
 def main(grid, response, difficulty):
 
-    SOLVE = Button(image=None, pos=(640, 460), text_input="BACK", font=get_font(40), base_color="white", hovering_color="Green")
+    SOLVE = Button(image='assets/play rect', pos=(640, 460), text_input="BACK", font=get_font(40), base_color="white", hovering_color="Green")
 
     TEXT = get_font(100).render("NOW PLAYING", True, "black")
     RECT = TEXT.get_rect(center=(640, 180))
