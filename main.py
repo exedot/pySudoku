@@ -43,7 +43,7 @@ def difficultyselect(difficulty, response, grid):
 
         SCREEN.fill("black")
 
-        difficultyselect_TEXT = get_font(45).render("This is the DIFFICULTY SELECT screen.", True, "white")
+        difficultyselect_TEXT = get_font(45).render("DIFFICULTY SELECT (broken)", True, "white")
         difficultyselect_RECT = difficultyselect_TEXT.get_rect(center=(640, 260))
         SCREEN.blit(difficultyselect_TEXT, difficultyselect_RECT)
 
@@ -83,13 +83,23 @@ def difficultyselect(difficulty, response, grid):
                     response = requests.get(difficulty)
                     grid = response.json()['grid']
                     return grid, response, difficulty, main(grid, response, difficulty)              
-        pygame.display.update()  
+        pygame.display.update()
+          
 # BOARD VARIABLES
 background_colour = (251,247,245)
 buffer = 5
 difficulty = "https://sugoku.herokuapp.com/grid?difficulty=easy"
 response = requests.get(difficulty)
-grid = response.json()['board']
+# Below is doppleganger, originally grid = response.json()['board'] was used but no longer functioned, this is to show off the ui in video
+grid = [[1, 4, 7, 0, 0, 0, 0, 0, 3],
+        [2, 5, 0, 0, 0, 1, 0, 0, 0],
+        [3, 0, 9, 0, 0, 0, 0, 0, 0],
+        [0, 8, 0, 0, 2, 0, 0, 0, 4],
+        [0, 0, 0, 4, 1, 0, 0, 2, 0],
+        [9, 0, 0, 0, 0, 0, 6, 0, 0],
+        [0, 0, 3, 0, 0, 0, 0, 0, 9],
+        [4, 0, 0, 0, 0, 2, 0, 0, 0],
+        [0, 0, 1, 0, 0, 8, 0, 0, 7]]
 grid_original = [[grid[x][y]for y in range(len(grid[0]))] for x in range(len(grid))]
 original_grid_element_colour = (52, 31, 151)
 # INSERTION FUNCTION
@@ -151,7 +161,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 pos = pygame.mouse.get_pos()
-                insert(SCREEN, (pos[0]//50, pos[1]//50))
+                insert((pos[0]//50, pos[1]//50))
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
